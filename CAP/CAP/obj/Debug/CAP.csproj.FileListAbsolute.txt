@@ -1,0 +1,18 @@
+c:\users\1\documents\visual studio 2015\Projects\CAP\CAP\bin\Debug\CAP.exe.config
+c:\users\1\documents\visual studio 2015\Projects\CAP\CAP\obj\Debug\CAP.csprojResolveAssemblyReference.cache
+c:\users\1\documents\visual studio 2015\Projects\CAP\CAP\obj\Debug\CAP.Form1.resources
+c:\users\1\documents\visual studio 2015\Projects\CAP\CAP\obj\Debug\CAP.Properties.Resources.resources
+c:\users\1\documents\visual studio 2015\Projects\CAP\CAP\obj\Debug\CAP.csproj.GenerateResource.Cache
+c:\users\1\documents\visual studio 2015\Projects\CAP\CAP\bin\Debug\CAP.exe
+c:\users\1\documents\visual studio 2015\Projects\CAP\CAP\bin\Debug\CAP.pdb
+c:\users\1\documents\visual studio 2015\Projects\CAP\CAP\obj\Debug\CAP.exe
+c:\users\1\documents\visual studio 2015\Projects\CAP\CAP\obj\Debug\CAP.pdb
+C:\Users\1\Desktop\Лабы Быкова\5\CAP\CAP\bin\Debug\CAP.exe.config
+C:\Users\1\Desktop\Лабы Быкова\5\CAP\CAP\obj\Debug\CAP.exe
+C:\Users\1\Desktop\Лабы Быкова\5\CAP\CAP\obj\Debug\CAP.pdb
+C:\Users\1\Desktop\Лабы Быкова\5\CAP\CAP\bin\Debug\CAP.exe
+C:\Users\1\Desktop\Лабы Быкова\5\CAP\CAP\bin\Debug\CAP.pdb
+C:\Users\1\Desktop\Лабы Быкова\5\CAP\CAP\obj\Debug\CAP.csprojResolveAssemblyReference.cache
+C:\Users\1\Desktop\Лабы Быкова\5\CAP\CAP\obj\Debug\CAP.Form1.resources
+C:\Users\1\Desktop\Лабы Быкова\5\CAP\CAP\obj\Debug\CAP.Properties.Resources.resources
+C:\Users\1\Desktop\Лабы Быкова\5\CAP\CAP\obj\Debug\CAP.csproj.GenerateResource.Cache
