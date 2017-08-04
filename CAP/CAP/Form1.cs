@@ -74,13 +74,13 @@ namespace CAP
             Graphics gr = Graphics.FromImage(bmp);
             Pen pen = new Pen(Brushes.Red, 2);
             edges = new List<Edge>();
-            
+
             for (int i = 0; i < points.Count; i++)
             {
                 if (i != points.Count - 1)
                 {
                     edges.Add(new Edge(points[i].X, points[i].Y, points[i + 1].X, points[i + 1].Y));
-                    gr.DrawLine(new Pen(Brushes.Green,2), new Point(Convert.ToInt32(pictureBox.Width / 2 + points[i].X * scale), Convert.ToInt32(pictureBox.Height / 2 - points[i].Y * scale)), new Point(Convert.ToInt32(pictureBox.Width / 2 + points[i + 1].X * scale), Convert.ToInt32(pictureBox.Height / 2 - points[i + 1].Y * scale)));
+                    gr.DrawLine(new Pen(Brushes.Green, 2), new Point(Convert.ToInt32(pictureBox.Width / 2 + points[i].X * scale), Convert.ToInt32(pictureBox.Height / 2 - points[i].Y * scale)), new Point(Convert.ToInt32(pictureBox.Width / 2 + points[i + 1].X * scale), Convert.ToInt32(pictureBox.Height / 2 - points[i + 1].Y * scale)));
                 }
                 else
                 {
@@ -89,7 +89,7 @@ namespace CAP
                 }
             }
             pictureBox.Image = bmp;
-            
+
         }
 
         //Метод САР
@@ -102,7 +102,7 @@ namespace CAP
             //Первая сортировка(Точки граней от верхней к нижней в одной грани)
             for (int i = 0; i < edges.Count; i++)
             {
-                if(edges[i].y2 > edges[i].y1)
+                if (edges[i].y2 > edges[i].y1)
                 {
                     newEdges.Add(new Edge(edges[i].x2, edges[i].y2, edges[i].x1, edges[i].y1));
                 }
@@ -112,34 +112,63 @@ namespace CAP
                 }
             }
             //Грани отсартированы от верхних к нижним
-            for (int i = 0; i < edges.Count-1; i++)
+            for (int i = 0; i < edges.Count - 1; i++)
             {
                 Edge bufEdge;
-                for (int j = 0; j < edges.Count-i; j++)
+                for (int j = 0; j < edges.Count - i; j++)
                 {
-                    if (newEdges[i].y1 < newEdges[i+1].y1)
+                    if (newEdges[i].y1 < newEdges[i + 1].y1)
                     {
                         bufEdge = new Edge(newEdges[i]);
-                        newEdges[i] = newEdges[i+1];
-                        newEdges[i+1] = bufEdge;
+                        newEdges[i] = newEdges[i + 1];
+                        newEdges[i + 1] = bufEdge;
                     }
                 }
             }
             //Нужны преобразования!!!
             for (int i = 0; i < pictureBox.Height; i++)
             {
-                for(int j = 0; j < newEdges.Count; j++)
+                for (int j = 0; j < newEdges.Count; j++)
                 {
                     //Добавление
-                    if(newEdges[j].y1 == i / scale)
+                    if (Convert.ToInt32(pictureBox.Height / 2 - newEdges[j].y1 * scale) == i)
                     {
                         ActiveEdge.Add(newEdges[j]);
                     }
                     //Удаление
-                    if (newEdges[j].y2 == i / scale)
+                    if (Convert.ToInt32(pictureBox.Height / 2 - newEdges[j].y2 * scale) == i)
                     {
-                        ActiveEdge.RemoveAt(j);
+                        foreach (Edge edge in ActiveEdge)
+                        {
+                            if (edge == newEdges[j])
+                            {
+                                ActiveEdge.Remove(edge);
+                                break;
+                            }
+                        }
                     }
+                }
+                double[] vector1 = new double[2];
+                double[] vector2 = new double[2];
+                for (int t = 0; t < ActiveEdge.Count; t += 2)
+                {
+                    vector1 = ActiveEdge[t].GetVector();
+                    vector2 = ActiveEdge[t + 1].GetVector();
+                    Point p1 = new Point();
+                    Point p2 = new Point();
+                    for (int k = 1; k < 100; k++)
+                    {
+                        if (Math.Abs(pictureBox.Height / 2 - (ActiveEdge[t].y1-k*vector1[1]/100) * scale - i)<=1)
+                        {
+                            p1 = new Point(Convert.ToInt32(pictureBox.Width / 2 + (ActiveEdge[t].x1 - k*vector1[0] /100) * scale), i);
+                        }
+                        if (Math.Abs(pictureBox.Height / 2 - (ActiveEdge[t+1].y1 - k * vector2[1] / 100) * scale - i) <= 1)
+                        {
+                            p2 = new Point(Convert.ToInt32(pictureBox.Width / 2 + (ActiveEdge[t+1].x1 - k*vector2[0] /100) * scale), i);
+                        }
+                    }
+                    if((p1.X !=0 && p1.Y !=0) && (p2.X !=0 && p2.Y!=0))
+                        gr.DrawLine(new Pen(Brushes.Black, 1), p1, p2);
                 }
             }
             pictureBox.Image = bmp;

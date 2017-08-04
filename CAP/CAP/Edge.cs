@@ -21,8 +21,6 @@ namespace CAP
             x2 = e.x2;
             y1 = e.y1;
             y2 = e.y2;
-            vector[0] = x2 - x1;
-            vector[1] = y2 - y1;
         }
 
         public Edge(double x1, double y1, double x2, double y2)
@@ -31,12 +29,14 @@ namespace CAP
             this.y1 = y1;
             this.x2 = x2;
             this.y2 = y2;
-            vector[0] = x2 - x1;
-            vector[1] = y2 - y1;
+            vector[0] = x1 - x2;
+            vector[1] = y1 - y2;
         }
 
         public double[] GetVector()
         {
+            vector[0] = x1 - x2;
+            vector[1] = y1 - y2;
             return vector;
         }
     }
