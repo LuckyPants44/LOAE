@@ -15,12 +15,18 @@ namespace CAP
 
         private double[] vector = new double[2];
 
+        public double distance()
+        {
+            return Math.Pow(vector[0] * vector[0] + vector[1] * vector[1], 2);
+        }
+
         public Edge(Edge e)
         {
             x1 = e.x1;
             x2 = e.x2;
             y1 = e.y1;
             y2 = e.y2;
+            vector = e.vector;
         }
 
         public Edge(double x1, double y1, double x2, double y2)

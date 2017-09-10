@@ -53,7 +53,7 @@ namespace CAP
             points = new List<Point>();
             try
             {
-                FileStream file = new FileStream("c:\\users\\1\\documents\\visual studio 2015\\Projects\\CAP\\CAP\\Points.txt", FileMode.Open);
+                FileStream file = new FileStream("C://Users//1//Desktop//Лабы Быкова//5//CAP//CAP//Points.txt", FileMode.Open);
                 StreamReader sr = new StreamReader(file);
                 buf = sr.ReadToEnd().Split(' ', '\n', '\r');
                 sr.Close();
@@ -89,11 +89,9 @@ namespace CAP
                 }
             }
             pictureBox.Image = bmp;
-
         }
 
         //Метод САР
-        //ToDO: Растеризовать
         private void FillingFigureButton_Click(object sender, EventArgs e)
         {
             Graphics gr = Graphics.FromImage(bmp);
@@ -125,7 +123,6 @@ namespace CAP
                     }
                 }
             }
-            //Нужны преобразования!!!
             for (int i = 0; i < pictureBox.Height; i++)
             {
                 for (int j = 0; j < newEdges.Count; j++)
@@ -150,24 +147,45 @@ namespace CAP
                 }
                 double[] vector1 = new double[2];
                 double[] vector2 = new double[2];
+
+                int step = 1000;
+                double step1 = 0;
                 for (int t = 0; t < ActiveEdge.Count; t += 2)
                 {
                     vector1 = ActiveEdge[t].GetVector();
                     vector2 = ActiveEdge[t + 1].GetVector();
                     Point p1 = new Point();
                     Point p2 = new Point();
-                    for (int k = 1; k < 100; k++)
+
+                    step1 = vector1[1] * scale;
+                    for (int k = 1; k < step1; k++)
                     {
-                        if (Math.Abs(pictureBox.Height / 2 - (ActiveEdge[t].y1-k*vector1[1]/100) * scale - i)<=1)
+                        if (Math.Abs(pictureBox.Height / 2 - (ActiveEdge[t].y1 - k * vector1[1] / step1) * scale - i) == 0)
                         {
-                            p1 = new Point(Convert.ToInt32(pictureBox.Width / 2 + (ActiveEdge[t].x1 - k*vector1[0] /100) * scale), i);
-                        }
-                        if (Math.Abs(pictureBox.Height / 2 - (ActiveEdge[t+1].y1 - k * vector2[1] / 100) * scale - i) <= 1)
-                        {
-                            p2 = new Point(Convert.ToInt32(pictureBox.Width / 2 + (ActiveEdge[t+1].x1 - k*vector2[0] /100) * scale), i);
+                            p1 = new Point(Convert.ToInt32(pictureBox.Width / 2 + (ActiveEdge[t].x1 - k * vector1[0] / step1) * scale), i);
                         }
                     }
-                    if((p1.X !=0 && p1.Y !=0) && (p2.X !=0 && p2.Y!=0))
+
+                    step1 = vector2[1] * scale;
+                    for (int k = 1; k < step1; k++)
+                    {
+                        if (Math.Abs(pictureBox.Height / 2 - (ActiveEdge[t+1].y1 - k * vector2[1] / step1) * scale - i) == 0)
+                        {
+                            p2 = new Point(Convert.ToInt32(pictureBox.Width / 2 + (ActiveEdge[t+1].x1 - k * vector2[0] / step1) * scale), i);
+                        }
+                    }
+                    /*for (int k = 1; k < step; k++)
+                    {
+                        if (Math.Abs(pictureBox.Height / 2 - (ActiveEdge[t].y1 - k * vector1[1] / step) * scale - i) <= 1)
+                        {
+                            p1 = new Point(Convert.ToInt32(pictureBox.Width / 2 + (ActiveEdge[t].x1 - k * vector1[0] / step) * scale), i);
+                        }
+                        if (Math.Abs(pictureBox.Height / 2 - (ActiveEdge[t + 1].y1 - k * vector2[1] / step) * scale - i) <= 1)
+                        {
+                            p2 = new Point(Convert.ToInt32(pictureBox.Width / 2 + (ActiveEdge[t + 1].x1 - k * vector2[0] / step) * scale), i);
+                        }
+                    }*/
+                    if ((p1.X != 0 && p1.Y != 0) && (p2.X != 0 && p2.Y != 0))
                         gr.DrawLine(new Pen(Brushes.Black, 1), p1, p2);
                 }
             }
