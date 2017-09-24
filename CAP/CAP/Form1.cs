@@ -123,17 +123,18 @@ namespace CAP
                     }
                 }
             }
-            for (int i = 0; i < pictureBox.Height; i++)
+            //Добавление и удаление активных ребер
+            for (int y = 0; y < pictureBox.Height; y++)
             {
                 for (int j = 0; j < newEdges.Count; j++)
                 {
                     //Добавление
-                    if (Convert.ToInt32(pictureBox.Height / 2 - newEdges[j].y1 * scale) == i)
+                    if (Convert.ToInt32(pictureBox.Height / 2 - newEdges[j].y1 * scale) == y)
                     {
                         ActiveEdge.Add(newEdges[j]);
                     }
                     //Удаление
-                    if (Convert.ToInt32(pictureBox.Height / 2 - newEdges[j].y2 * scale) == i)
+                    if (Convert.ToInt32(pictureBox.Height / 2 - newEdges[j].y2 * scale) == y)
                     {
                         foreach (Edge edge in ActiveEdge)
                         {
@@ -145,51 +146,46 @@ namespace CAP
                         }
                     }
                 }
-                double[] vector1 = new double[2];
-                double[] vector2 = new double[2];
-
-                int step = 1000;
-                double step1 = 0;
-                for (int t = 0; t < ActiveEdge.Count; t += 2)
+                if (ActiveEdge.Count != 0)
                 {
-                    vector1 = ActiveEdge[t].GetVector();
-                    vector2 = ActiveEdge[t + 1].GetVector();
-                    Point p1 = new Point();
-                    Point p2 = new Point();
-
-                    step1 = vector1[1] * scale;
-                    for (int k = 1; k < step1; k++)
+                    List<Point> resultPoints = new List<Point>();
+                    foreach (Edge ed in ActiveEdge)
                     {
-                        if (Math.Abs(pictureBox.Height / 2 - (ActiveEdge[t].y1 - k * vector1[1] / step1) * scale - i) == 0)
+                        Point bufPoint1 = new Point(Convert.ToInt32(pictureBox.Width / 2 + ed.x1 * scale), Convert.ToInt32(pictureBox.Height / 2 - ed.y1 * scale));
+                        Point bufPoint2 = new Point(Convert.ToInt32(pictureBox.Width / 2 + ed.x2 * scale), Convert.ToInt32(pictureBox.Height / 2 - ed.y2 * scale));
+                        for (int x = 0; x < pictureBox.Width; x++)
                         {
-                            p1 = new Point(Convert.ToInt32(pictureBox.Width / 2 + (ActiveEdge[t].x1 - k * vector1[0] / step1) * scale), i);
+                            //Уравнение прямой проходящей через 2 точки
+                            if (((y - bufPoint1.Y) * (bufPoint2.X - bufPoint1.X) - (x - bufPoint1.X) * (bufPoint2.Y - bufPoint1.Y))<0.001)
+                            {
+                                resultPoints.Add(new Point(x, y));
+                                break;
+                            }
                         }
                     }
-
-                    step1 = vector2[1] * scale;
-                    for (int k = 1; k < step1; k++)
+                    //Сортировка по X
+                    for (int i = 0; i < resultPoints.Count; i++)
                     {
-                        if (Math.Abs(pictureBox.Height / 2 - (ActiveEdge[t+1].y1 - k * vector2[1] / step1) * scale - i) == 0)
+                        for (int j = 0; j < resultPoints.Count - i - 1; j++)
                         {
-                            p2 = new Point(Convert.ToInt32(pictureBox.Width / 2 + (ActiveEdge[t+1].x1 - k * vector2[0] / step1) * scale), i);
+                            if (resultPoints[j].X > resultPoints[j + 1].X)
+                            {
+                                Point p = new Point(resultPoints[j].X, resultPoints[j].Y);
+                                resultPoints[j] = resultPoints[j + 1];
+                                resultPoints[j + 1] = p;
+                            }
                         }
                     }
-                    /*for (int k = 1; k < step; k++)
+                    //Вывод
+                    for (int i = 0; i < resultPoints.Count; i += 2)
                     {
-                        if (Math.Abs(pictureBox.Height / 2 - (ActiveEdge[t].y1 - k * vector1[1] / step) * scale - i) <= 1)
-                        {
-                            p1 = new Point(Convert.ToInt32(pictureBox.Width / 2 + (ActiveEdge[t].x1 - k * vector1[0] / step) * scale), i);
-                        }
-                        if (Math.Abs(pictureBox.Height / 2 - (ActiveEdge[t + 1].y1 - k * vector2[1] / step) * scale - i) <= 1)
-                        {
-                            p2 = new Point(Convert.ToInt32(pictureBox.Width / 2 + (ActiveEdge[t + 1].x1 - k * vector2[0] / step) * scale), i);
-                        }
-                    }*/
-                    if ((p1.X != 0 && p1.Y != 0) && (p2.X != 0 && p2.Y != 0))
-                        gr.DrawLine(new Pen(Brushes.Black, 1), p1, p2);
+                        if (i + 1 != resultPoints.Count)
+                            gr.DrawLine(Pens.Red, resultPoints[i], resultPoints[i + 1]);
+                    }
                 }
+                DrawFigure();
+                pictureBox.Image = bmp;
             }
-            pictureBox.Image = bmp;
         }
     }
 }
